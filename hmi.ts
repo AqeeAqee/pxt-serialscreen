@@ -1,36 +1,4 @@
-// 在此处添加您的代码
-/**
- * todo:
- * clear screen
- * combine cutPasteImage and rotateCutPasteImage to one block
- * set radio group
- * Joystick, via micro:bit event
- * draw line
- * set debug window size&pos
- * group blocks
- * note Serail/Radio need other setting blocks
- * DGus mode
- * ? on-screen micro:bit emulator
- * ? scratch resource, and interact
- * ? arcade(makecode) resource, and interact
- * +simplify 0x98, with Font#0 style, remove param color/bgcolor, use setting before
- * -draw circle (not support by COF screen)
- * -0x7D 花式图片切换, screen halt
- * +0x96 QRCode
- * +radio receiving
- * +0x40 set color/bgcolor
- * +0x50 draw dot
- * +0x00 version reply
- * +0x5F backlight
- * +0xE7 rtc
- * +0x79 beep
- * 0x9E rotate paste
- * ?:
- * 0xC104 示波器
- * 0x45 textbox
- * 0x72 direct mem write
- * 
- */
+
 enum CommunicationType {
     //% block=Serial
     serial,
