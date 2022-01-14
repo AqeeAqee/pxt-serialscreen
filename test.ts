@@ -88,11 +88,11 @@ loops.everyInterval(1000, ()=>{
     // hmi.showText0(n.toString(), FontSize0.fs32, 100, 130)
     // basic.showNumber(n,200)
 })
-hmi.onTouchDown(function (x, y) {
+hmi.onTouch(TouchType.touchDown,function (x, y) {
     serial.writeLine("TouchDown:" + x.toString() + "," + y.toString())
     hmi.debug("TouchDown:" + x.toString() + "," + y.toString())
 })
-hmi.onTouchUp(function (x, y) {
+hmi.onTouch(TouchType.touchUp, function (x, y) {
     serial.writeLine("TouchUp:" + x.toString() + "," + y.toString())
     hmi.log("TouchUp:" + x.toString() + "," + y.toString())
 })

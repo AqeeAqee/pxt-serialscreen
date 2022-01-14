@@ -1,5 +1,5 @@
 {
-    "name": "pxt-SerialScreen220110",
+    "name": "pxt-SerialScreen",
     "description": "",
     "dependencies": {
         "core": "*",

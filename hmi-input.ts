@@ -25,6 +25,7 @@ namespace hmi{
      */
     //% blockId=onVersionReply block="on Version Reply" blockGap=16
     //% draggableParameters=reporter
+    //% group="others"
     //% weight=49
     export function onVersionReply(handler: (str: string) => void): void {
         onVersionReplyHandler = handler
@@ -36,7 +37,9 @@ namespace hmi{
      */
     //% blockId=onGetClock block="on Get Clock" blockGap=16
     //% draggableParameters=reporter
+    //% group="others"
     //% weight=49
+    //% blockHidden=true
     export function onGetClock(handler: (hour: number, minute: number, second: number, year: number, month: number, date: number, week: number) => void): void {
         onGetClockHandler = handler
     }
@@ -58,17 +61,17 @@ namespace hmi{
         }
         //Touch Up
         else if (listCommand[0] == 0x72) {
-            if (onTouchUpHandler)
-                onTouchUpHandler(listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
-            if (onTouchHandler)
-                onTouchHandler(listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
+            if (onTouchHandler[TouchType.touchUp])
+                onTouchHandler[TouchType.touchUp](listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
+            if (onTouchHandler[TouchType.touch])
+                onTouchHandler[TouchType.touch](listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
         } 
         //Touch Down
         else if (listCommand[0] == 0x73) {
-            if (onTouchDownHandler)
-                onTouchDownHandler(listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
-            if (onTouchHandler)
-                onTouchHandler(listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
+            if (onTouchHandler[TouchType.touchDown])
+                onTouchHandler[TouchType.touchDown](listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
+            if (onTouchHandler[TouchType.touch])
+                onTouchHandler[TouchType.touch](listCommand[1] * 256 + listCommand[2], listCommand[3] * 256 + listCommand[4])
         } else {
             if (onReceivedHandler)
                 onReceivedHandler(listCommand)
@@ -126,53 +129,40 @@ namespace hmi{
         }
     }
 
-    let onTouchHandler: (x: number, y: number) => void
-    let onTouchDownHandler: (x: number, y: number) => void
-    let onTouchUpHandler: (x: number, y: number) => void
+    let onTouchHandler: Array<(x: number, y: number) => void> =[]
 
     /**
      * onTouch
      */
-    //% blockId=onTouch block="onTouch" blockGap=16
+    //% blockId=onTouch block="onTouch %type" blockGap=16
     //% draggableParameters=reporter
+    //% group="basic"
     //% weight=40
-    export function onTouch(handler: (x: number, y: number) => void): void {
-        onTouchHandler = handler
+    export function onTouch(type:TouchType, handler: (x: number, y: number) => void): void {
+        onTouchHandler[type] = handler
     }
 
-    /**
-     * onTouchDown
-     */
-    //% blockId=onTouchDown block="onTouchDown" blockGap=16
-    //% draggableParameters=reporter
-    //% advanced=1
-    //% weight=40
-    export function onTouchDown(handler: (x: number, y: number) => void): void {
-        onTouchDownHandler = handler
-    }
-
-    /**
-     * onTouchUp
-     */
-    //% blockId=onTouchUp block="onTouchUp" blockGap=16
-    //% draggableParameters=reporter
-    //% advanced=1
-    //% weight=40
-    export function onTouchUp(handler: (x: number, y: number) => void): void {
-        onTouchUpHandler = handler
-    }
 
     let onReceivedHandler: (list: number[]) => void
-
     /**
      * On Received Unknown Msg
      */
     //% blockId=onReceivedUnknownMsg block="On Received Unknown Msg" blockGap=16
     //% draggableParameters=reporter
     //% advanced=1
+    //% group="others"
     //% weight=20
     export function onReceivedUnknownMsg(handler: (list: number[]) => void): void {
         onReceivedHandler = handler
     }
 
+}
+
+enum TouchType{
+    //% block="Touch"
+    touch,
+    //% block="Touch Up"
+    touchUp,
+    //% block="Touch Down"
+    touchDown,
 }

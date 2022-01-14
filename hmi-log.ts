@@ -49,6 +49,7 @@ namespace hmi{
      */
     //% blockId=LogDebug block="[Debug] msg%text" blockGap=16
     //% advanced=true
+    //% group="log"
     //% weight=70
     export function debug(text: string) {
         logToHMI(ConsolePriority.Debug, text)
@@ -59,6 +60,7 @@ namespace hmi{
      */
     //% blockId=LogLog block="[Log] msg%text" blockGap=16
     //% advanced=true
+    //% group="log"
     //% weight=69
     export function log(text: string) {
         logToHMI(ConsolePriority.Log, text)
@@ -69,6 +71,7 @@ namespace hmi{
      */
     //% blockId=LogWarning block="[Warning] msg%text" blockGap=16
     //% advanced=true
+    //% group="log"
     //% weight=68
     export function warning(text: string) {
         logToHMI(ConsolePriority.Warning, text)
@@ -79,6 +82,7 @@ namespace hmi{
      */
     //% blockId=LogError block="[Error] msg%text" blockGap=16
     //% advanced=true
+    //% group="log"
     //% weight=67
     export function error(text: string) {
         logToHMI(ConsolePriority.Silent, text)
@@ -89,6 +93,7 @@ namespace hmi{
      */
     //% blockId=addToConsoleLogListener block="output console logs to DWin" blockGap=16
     //% advanced=true
+    //% group="log"
     //% weight=66
     export function addToConsoleLogListener() {
         console.addListener(logToHMI)
@@ -100,6 +105,7 @@ namespace hmi{
      */
     //% blockId=setMinPriority block="only show priority%priority and above logs" blockGap=16
     //% advanced=true
+    //% group="log"
     //% weight=65
     export function setMinPriority(priority: ConsolePriority) {
         console.minPriority = priority

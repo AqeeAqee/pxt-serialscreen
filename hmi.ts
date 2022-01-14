@@ -16,7 +16,7 @@ enum DeviceType {
 /**
  * Control and get feedback via serial with a DWin screen (HMI/Serial Screen)
  */
-//% groups=['basic']
+//% groups=['basic','drawing','log','others']
 //% color=#23738C weight=96 icon="\uf03e"
 namespace hmi { //f011
     export let deviceType = DeviceType.ta
@@ -31,6 +31,7 @@ namespace hmi { //f011
      * And will set Rx Buffer Size to Max (254)
      */
     //% blockId=initialize block="use DWin screen of %type mode via %comType" blockGap=16
+    //% group="basic"
     //% weight=100
     export function initialize(type: DeviceType, comType: CommunicationType):void{
         deviceType=type
@@ -64,16 +65,18 @@ namespace hmi { //f011
         if(_comType==CommunicationType.serial){
             serial.writeBuffer(b)
         }else if(_comType==CommunicationType.radio){
-            b.chunked(19).forEach((subBuffer: Buffer, index: number): void => {
-                radio.sendBuffer(subBuffer)
+            //sendBuffer max len=19
+            //aqee custom protocal max len=29-1, byte0 for custom type '0x75'
+            b.chunked(28).forEach((subBuffer: Buffer, index: number): void =>{
+                radio.sendRawPacket(Buffer.concat([Buffer.fromHex("75"), subBuffer, Buffer.create(4)])) //last 4 bytes always be set 0.
             })
         }
     }
 
     /**
      * Send Command in HEX string
-     * without command prefix/postfix
-     * w/o space, comma, 0x, 0X
+     * command prefix/postfix will be appended automatically, 
+     * w/wo space, comma, 0x, 0X
      */
     //% blockId=sendCommand block="send general command %sCmd" blockGap=16
     //% advanced=1
@@ -83,8 +86,10 @@ namespace hmi { //f011
         sCmd = sCmd.replaceAll("0x", "")
         sCmd = sCmd.replaceAll("0X", "")
         sCmd = sCmd.replaceAll(",", "")
+        sCmd = sCmd.replaceAll("\n", "")
+        sCmd = sCmd.replaceAll("\r", "")
+        console.debug("sendCommand:'"+sCmd+"'")
         sendCommandBuffer(Buffer.fromHex(sCmd))
-        //console.debug("sendCommand:"+sCmd)
     }
 
     //deprecated
