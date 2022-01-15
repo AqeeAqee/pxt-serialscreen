@@ -66,10 +66,13 @@ namespace hmi { //f011
             serial.writeBuffer(b)
         }else if(_comType==CommunicationType.radio){
             //sendBuffer max len=19
-            //aqee custom protocal max len=29-1, byte0 for custom type '0x75'
-            b.chunked(28).forEach((subBuffer: Buffer, index: number): void =>{
-                radio.sendRawPacket(Buffer.concat([Buffer.fromHex("75"), subBuffer, Buffer.create(4)])) //last 4 bytes always be set 0.
+            b.chunked(19).forEach((subBuffer: Buffer, index: number): void => {
+                radio.sendBuffer(subBuffer) 
             })
+            // //aqee custom protocal max len=29-1, byte0 for custom type '0x75'
+            // b.chunked(28).forEach((subBuffer: Buffer, index: number): void => {
+            //     radio.sendRawPacket(Buffer.concat([Buffer.fromHex("75"), subBuffer, Buffer.create(4)])) //last 4 bytes always be set 0.
+            // })
         }
     }
 
