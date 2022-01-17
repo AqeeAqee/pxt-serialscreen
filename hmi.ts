@@ -65,14 +65,14 @@ namespace hmi { //f011
         if(_comType==CommunicationType.serial){
             serial.writeBuffer(b)
         }else if(_comType==CommunicationType.radio){
-            //sendBuffer max len=19
-            b.chunked(19).forEach((subBuffer: Buffer, index: number): void => {
-                radio.sendBuffer(subBuffer) 
-            })
-            // //aqee custom protocal max len=29-1, byte0 for custom type '0x75'
-            // b.chunked(28).forEach((subBuffer: Buffer, index: number): void => {
-            //     radio.sendRawPacket(Buffer.concat([Buffer.fromHex("75"), subBuffer, Buffer.create(4)])) //last 4 bytes always be set 0.
+            // //sendBuffer max len=19
+            // b.chunked(19).forEach((subBuffer: Buffer, index: number): void => {
+            //     radio.sendBuffer(subBuffer) 
             // })
+            //aqee custom protocal max len=29-1, byte0 for custom type '0x75'
+            b.chunked(28).forEach((subBuffer: Buffer, index: number): void => {
+                radio.sendRawPacket(Buffer.concat([Buffer.fromHex("75"), subBuffer, Buffer.create(4)])) //last 4 bytes always be set 0.
+            })
         }
     }
 
@@ -91,7 +91,7 @@ namespace hmi { //f011
         sCmd = sCmd.replaceAll(",", "")
         sCmd = sCmd.replaceAll("\n", "")
         sCmd = sCmd.replaceAll("\r", "")
-        console.debug("sendCommand:'"+sCmd+"'")
+        //console.debug("sendCommand:'"+sCmd+"'")
         sendCommandBuffer(Buffer.fromHex(sCmd))
     }
 

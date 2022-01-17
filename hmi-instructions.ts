@@ -1,6 +1,7 @@
 //ref https://makecode.com/defining-blocks
 
 namespace hmi {
+    let _color = 0xffffff, _bgcolor = 0x000000
 
 
     /**
@@ -155,8 +156,14 @@ namespace hmi {
     export class Point {
         x: number
         y: number
+
+        //% blockId="getX_Point" block="%this(point)|x"
+        //% inlineInputMode=inline
+        //% weight=86
+        public getX(): number {
+            return this.x
+        }
     }
-    let _color = 0xffffff, _bgcolor = 0x000000
 
     /**
      * Make a point
@@ -165,12 +172,22 @@ namespace hmi {
     //% inlineInputMode=inline
     //% blockSetVariable=point
     //% group="drawing"
-    //% weight=86
+    //% weight=85
     export function point(x:number=10, y:number=10):Point{
         let p=new Point()
         p.x=x
         p.y=y
         return p
+    }
+
+    //% blockId="getPointX" block="%p|X"
+    //% inlineInputMode=inline
+    // p.defl=Point
+    // autoCreate=hmi.point
+    //% p.shadow=makepoint
+    //% weight=86
+    export function getPointX(p:Point): number {
+        return p.x
     }
 
     /**
@@ -182,7 +199,7 @@ namespace hmi {
     //% list.shadow="lists_create_with"
     //% list.defl="makepoint"
     //% group="drawing"
-    //% weight=85
+    //% weight=84
     export function drawLine(list: Point[]) {//=[point(0,0),point(100,100)]
         let bCmd:Buffer
         switch (deviceType) {
@@ -205,7 +222,7 @@ namespace hmi {
     /**
      * draw Circle filled or empty, with front color set by "Set Colors" Block
      */
-    //% blockId=drawCircle block="draw Circle at x%x y%y radia%r ||fill" blockGap=16
+    //% blockId=drawCircle block="draw Circle at x%x y%y radius%r ||fill" blockGap=16
     //% inlineInputMode=inline
     //% group="drawing"
     //% weight=83
