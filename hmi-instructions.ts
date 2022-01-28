@@ -91,7 +91,7 @@ namespace hmi {
                 bCmd.setNumber(NumberFormat.UInt16BE, 1, x)
                 bCmd.setNumber(NumberFormat.UInt16BE, 3, y)
                 bCmd.setNumber(NumberFormat.UInt8LE, 5, 0)  //font ID 0#, need transfer into Screen in advance
-                bCmd.setNumber(NumberFormat.UInt8LE, 6, 0x02 | 0x80 | (BackgroundColorMode.drawBackground ? 0x40 : 0))  //C_Mode, gbk=0x02(for 0#lib), draw front=0x80, draw bg=0x40;
+                bCmd.setNumber(NumberFormat.UInt8LE, 6, 0x02 | 0x80 | (drawBg==BackgroundColorMode.drawBackground ? 0x40 : 0))  //C_Mode, gbk=0x02(for 0#lib), draw front=0x80, draw bg=0x40;
                 bCmd.setNumber(NumberFormat.UInt8LE, 7, fs)
                 bCmd.setNumber(NumberFormat.UInt16BE, 8, to565(_color))
                 bCmd.setNumber(NumberFormat.UInt16BE, 10, to565(_bgcolor))
